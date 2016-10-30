@@ -1,5 +1,7 @@
 # Word Clock
 
+![Word Clock Preview](http://i.imgur.com/zgwVXF9.png)
+
 is based on:
 
 http://conky.pitstop.free.fr/wiki/index.php5?title=Word_clock_%28en%29

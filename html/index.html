@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<html lang="en">
+    <head>
+        <title>Word Clock</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <style>
+            #page {
+                position: absolute;
+                text-align: center;
+                top: 0px;
+                left: 0px;
+                bottom: 0px;
+                right: 0px;
+                background-image: url("bg.jpg");
+                background-size: cover;
+            }
+            .clock {
+                display: inline-block;
+                padding: 20px;
+                color: rgba(208, 208, 208, 0.2);
+                background: rgb(2, 40, 50);
+                font-family: Ubuntu Mono, Consolas, 'Liberation Mono', Courier, monospace;
+                font-size: 28px;
+
+                -webkit-box-shadow: 10px 10px 15px rgba(0,0,0,0.5);
+                -moz-box-shadow: 10px 10px 15px rgba(0,0,0,0.5);
+                box-shadow: 10px 10px 15px rgba(0,0,0,0.5);
+
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+            .clock .light {
+                color: rgb(70, 232, 222);
+            }
+        </style>
+
+        <script src="wclock.js6" type="text/javascript"> </script>
+    </head>
+    <body>
+        <div id="page">
+            <div id="clock" class="clock"> </div>
+        </div>
+    </body>
+</html>

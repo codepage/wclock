@@ -1,6 +1,6 @@
 # Word Clock
 
-![Word Clock Preview](http://i.imgur.com/zgwVXF9.png)
+![Word Clock Preview](https://github.com/codepage/wclock/blob/master/preview.png)
 
 is based on:
 

@@ -66,11 +66,10 @@ function getFace() {
     function minMatch(minFrom, minTo) { return minFrom <= MINUTE && MINUTE < minTo };
 
     function changed() {
-        let item = cTimes.filter(function(val) {
-            return val.length > 1 && minMatch(val[0],  val[1]);
-        });
-        let val = item[0].toString();
-        let change = val !== timeVal;
+        const item = cTimes.filter(val =>
+            val.length > 1 && minMatch(val[0],  val[1]));
+        const val = item[0].toString();
+        const change = val !== timeVal;
         if (change) timeVal = val;
         return change;
     }
@@ -98,20 +97,19 @@ function getFace() {
     }
 
     function fmtFaceLines() {
-        const lines = face.split('\n');
-        for (let i = 0; i < lines.length; i++) {
-            lines[i] = `<div class='row'>${lines[i]}</div>`;
-        }
-        face = lines.join('\n');
-        face = face.replace('*', '').replace('*', '');
+        const lines = face.split('\n')
+                .map(item => `<div class='row'>${item}</div>`);
+        face = lines.join('\n')
+                .replace('*', '')
+                .replace('*', '');
     }
 
     // ---------------------------------------------------------------------  //
     // actions
     // ---------------------------------------------------------------------  //
 
-    // a bit weird... iterate joined arrays
-    [].concat(cPre, cTimes, cPost).map(function(val, i) {
+    // iterate joined arrays
+    [].concat(cPre, cTimes, cPost).map((val, i) => {
             let isHour = (val.length == 1);
             let txt = cNames[i];
             isHour ? hourFMT(txt, val) : minFMT(txt, val);
@@ -128,6 +126,4 @@ function run() {
     setTimeout(run, 15000);
 }
 
-window.onload = function() {
-    run();
-}
+window.addEventListener('load', run);

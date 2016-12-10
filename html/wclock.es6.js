@@ -57,6 +57,8 @@ function getFace() {
 
     const cPost = [[0, 5], [5, 35], [30, 35], [35, 61]];
 
+    const cTimeData = [].concat(cPre, cTimes, cPost);
+
     if (!changed()) return null;
 
     // ---------------------------------------------------------------------  //
@@ -108,8 +110,8 @@ function getFace() {
     // actions
     // ---------------------------------------------------------------------  //
 
-    // iterate joined arrays
-    [].concat(cPre, cTimes, cPost).map((val, i) => {
+    // iterate time data
+    cTimeData.map((val, i) => {
             let isHour = (val.length == 1);
             let txt = cNames[i];
             isHour ? hourFMT(txt, val) : minFMT(txt, val);

@@ -44,8 +44,8 @@ def main(stdscr):
             stdscr.erase()
             face = wclock.Face()
             for ch in face:
-                if ch in ['(', ')']:
-                    color = color1 if ch == '(' else color0
+                if ch in ['[', ']']:
+                    color = color1 if ch == '[' else color0
                     continue
                 stdscr.addstr(ch, color)
             stdscr.refresh()

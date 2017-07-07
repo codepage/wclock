@@ -1,28 +1,32 @@
-background no
+conky.config = {
+	background = false,
 
-own_window yes
-own_window_type desktop
-own_window_class Conky
-own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+	own_window = true,
+	own_window_type = 'desktop',
+	own_window_class = 'Conky',
+	own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
 
-text_buffer_size 2048
+	text_buffer_size = 2048,
 
-alignment bottom_right
-gap_x 20
-gap_y 50
+	alignment = 'bottom_right',
+	gap_x = 20,
+	gap_y = 50,
 
-use_xft yes
-xftfont Ubuntu Mono:bold:size=18
-xftalpha 0.1
-update_interval 15.0
+	use_xft = true,
+	font = 'Ubuntu Mono:bold:size=18',
+	xftalpha = 0.1,
+	--update_interval = 15.0,
 
-double_buffer yes
-own_window_argb_visual yes
-own_window_argb_value 0
-draw_shades no
+	double_buffer = true,
+	own_window_argb_visual = true,
+	own_window_argb_value = 0,
+	draw_shades = false,
 
-default_color ffffff
-color1 2d2d2d
+	default_color = '#ffffff',
+	color1 = '#2d2d2d',
 
-TEXT
-${execp python wclock.py}
+};
+
+conky.text = [[
+${execpi 15 python wclock.py}
+]];

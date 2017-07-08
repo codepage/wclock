@@ -26,8 +26,12 @@ The core is rewritten in Python and CoffeScript, because pure conky version is t
 
 \- open `index.html` in your favorite browser
 
+##### 4\. Qt GUI
+
+\- run `python qtClock.py`
+
 ## License
 
-Copyright (C) 2016 [xDaks](http://xdaks.deviantart.com)
+Copyright (C) 2016 - 2017 [xDaks](http://xdaks.deviantart.com)
 
 Licensed under the [![WTFPL](http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl-badge-2.png)](http://www.wtfpl.net) license.

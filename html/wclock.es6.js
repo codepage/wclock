@@ -23,6 +23,7 @@ function getFace() {
     // ---------------------------------------------------------------------  //
     // vars
     // ---------------------------------------------------------------------  //
+
     const t = new Date();
 
     const HOUR = t.getHours() % 12 || 12;
@@ -30,34 +31,44 @@ function getFace() {
     const MINUTE = t.getMinutes();
 
     let face = [
-            "[I T ' S] X [A B O U T] E",
-            "[A] C [Q U A R T E R] D C",
-            "[T W E N T Y] [F I V E] X",
-            "[H A L F] B [T E N] F [T O]",
-            "[P A S T] E R U [N I N E]",
-            "[O N E] [S I X] [T H R E E]",
-            "[F O U R] [*F I V E*] [T W O]",
-            "[E I G H T] [E L E V E N]",
-            "[S E V E N] [T W E L V E]",
-            "[T E N] S E [O C L O C K]"
-    ].join('\n');
+            "(I T ' S) X (A B O U T) E",
+            "(A) C (Q U A R T E R) D C",
+            "(T W E N T Y) (F I V E) X",
+            "(H A L F) B (T E N) F (T O)",
+            "(P A S T) E R U (N I N E)",
+            "(O N E) (S I X) (T H R E E)",
+            "(F O U R) (F I V E) (T W O)",
+            "(E I G H T) (E L E V E N)",
+            "(S E V E N) (T W E L V E)",
+            "(T E N) S E (O C L O C K)"
+    ];
 
-    const cNames = ['I T \' S', 'A B O U T', 'A', 'Q U A R T E R', 'T W E N T Y', 'F I V E', 'F I V E', 'T E N',
-                   'N I N E', 'O N E', 'S I X', 'T H R E E', 'F O U R', '*F I V E*',
-                   'T W O', 'E I G H T', 'E L E V E N', 'S E V E N', 'T W E L V E',
-                   'T E N', 'O C L O C K', 'P A S T', 'H A L F', 'T O'];
+    const cTimes = MINUTE < 35 ? [
+        [[-1, -1], [-1, -1]],
+        [[15, 20], [15, 20]],
+        [[20, 30], [25, 30, false], [5, 10]],
+        [[30, 35], [10, 15], [35, 61]],
+        [[5, 35], [9]],
+        [[1], [6], [3]],
+        [[4], [5], [2]],
+        [[8], [11]],
+        [[7], [12]],
+        [[10], [0, 5]]
+     ]
+     :
+     [
+        [[-1, -1], [-1, -1]],
+        [[45, 50], [45, 50]],
+        [[35, 45], [35, 40, false], [55, 61]],
+        [[30, 35], [50, 55], [35, 61]],
+        [[5, 35], [8]],
+        [[12], [5], [2]],
+        [[3], [4], [1]],
+        [[7], [10]],
+        [[6], [11]],
+        [[9], [0, 5]]
+     ];
 
-    const cPre = [[-1, -1], [-1, -1]];
-
-    const cTimes = MINUTE < 35 ? [[15, 20], [15, 20], [20, 30], [25, 30, false], [5, 10], [10, 15],
-                                  [9], [1], [6], [3], [4], [5], [2], [8], [11], [7], [12], [10]]
-                                 :
-                                 [[45, 50], [45, 50], [35, 45], [35, 40, false], [55, 61], [50, 55],
-                                  [8], [12], [5], [2], [3], [4], [1], [7], [10], [6], [11], [9]];
-
-    const cPost = [[0, 5], [5, 35], [30, 35], [35, 61]];
-
-    const cTimeData = [].concat(cPre, cTimes, cPost);
 
     if (!changed()) return null;
 
@@ -68,58 +79,67 @@ function getFace() {
     function minMatch(minFrom, minTo) { return minFrom <= MINUTE && MINUTE < minTo };
 
     function changed() {
-        const item = cTimes.filter(val =>
-            val.length > 1 && minMatch(val[0],  val[1]));
-        const val = item[0].toString();
+        let item;
+        for (let row of cTimes) {
+            item = row.filter(val => val.length > 1 && minMatch(val[0],  val[1]));
+            if (item.length > 0) break;
+        };
+        const val = item.toString();
         const change = val !== timeVal;
         if (change) timeVal = val;
         return change;
     }
 
-    function fmtFace(match, val, repl = true) {
-        const src = `[${val}]`;
+    function fmtFace(row, match, val, repl = true) {
+        const src = `(${val})`;
         const fmt_on = `<span class='light'>${val}</span>`;
         if (match) {
-            face = face.replace(src, fmt_on);
+            return row.replace(src, fmt_on);
         } else if (repl) {
-            face = face.replace(src, val);
+            return row.replace(src, val);
         }
+        return row
     }
 
-    function minFMT(txt, times) {
+    function minFMT(row, txt, times) {
         const [nMinFrom, nMinTo, repl] = times;
         const match = minMatch(nMinFrom, nMinTo) || (nMinFrom == -1);
-        fmtFace(match, txt, repl);
+        return fmtFace(row, match, txt, repl);
     }
 
-    function hourFMT(txt, times) {
+    function hourFMT(row, txt, times) {
         const [nHour, repl] = times;
         const match = (nHour == HOUR) || (nHour == 0);
-        fmtFace(match, txt, repl);
+        return fmtFace(row, match, txt, repl);
     }
 
-    function fmtFaceLines() {
-        const lines = face.split('\n')
-                .map(item => `<div class='row'>${item}</div>`);
-        face = lines.join('\n')
-                .replace('*', '')
-                .replace('*', '');
+    function fmtFaceLines(rows) {
+        const lines = rows.map(item => `<div class='row'>${item}</div>`);
+        return lines.join('\n');
+    }
+
+    function getText(row) {
+        b = row.indexOf('(');
+        e = row.indexOf(')');
+        return (b == -1 || e == -1) ? '' : row.substring(b + 1, e);
     }
 
     // ---------------------------------------------------------------------  //
     // actions
     // ---------------------------------------------------------------------  //
 
-    // iterate time data
-    cTimeData.map((val, i) => {
+    let rows = face.map((row, i) => {
+        cTimes[i].forEach(val => {
             let isHour = (val.length == 1);
-            let txt = cNames[i];
-            isHour ? hourFMT(txt, val) : minFMT(txt, val);
+            let txt = getText(row);
+            if (txt != '') {
+                row = isHour ? hourFMT(row, txt, val) : minFMT(row, txt, val);
+            }
+        });
+        return row;
     });
 
-    fmtFaceLines();
-
-    return face;
+    return fmtFaceLines(rows);
 }
 
 function run() {

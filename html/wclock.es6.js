@@ -71,7 +71,7 @@ function getFace() {
     }
 
     function R(row, t1, t2) {
-        let t = MINUTE <= 35 ? t1 : t2;
+        let t = MINUTE < 35 ? t1 : t2;
         t.forEach(val => {
             let isHour = (val.length == 1);
             let txt = getText(row);

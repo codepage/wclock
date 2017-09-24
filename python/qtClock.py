@@ -5,6 +5,7 @@ import sys
 import os
 import sys
 import subprocess
+import random
 import wclock
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtCore import Qt, QUrl
@@ -29,13 +30,13 @@ def style():
                 color: #BFBFBF;
             }
             QMainWindow {
-                background: #4D4D4D;
+                background: #2B2B2B;
             }
         """
     )
 
 def styleHighlight():
-    return 'color: #DBFFEF; font-weight: bold;'
+    return 'color: {}; font-weight: bold;'.format('#00FFD7')
 
 class ClockWindow(QtGui.QMainWindow):
 
@@ -51,8 +52,6 @@ class ClockWindow(QtGui.QMainWindow):
             QApplication.quit()
 
     def clockFace(self):
-        b = '<span style="{}">'.format(styleHighlight())
-        e = '</span>'
         result = ''
         face = wclock.Face()
         if self.face == face:
@@ -60,8 +59,12 @@ class ClockWindow(QtGui.QMainWindow):
         self.face = face
 
         face = face.split('\n')
+
+        b = '<span style="{}">'.format(styleHighlight())
+        e = '</span>'
         for row in face:
             result += '<div>{}</div>'.format(row).replace('[', b).replace(']', e)
+
         return result
 
     def updateFace(self):
@@ -73,7 +76,7 @@ class ClockWindow(QtGui.QMainWindow):
         super(ClockWindow, self).__init__()
 
         self.face = ''
-        self.setWindowTitle('Clock')
+        self.setWindowTitle('Word Clock')
 
         self.label = QtGui.QLabel()
         self.label.setTextFormat(Qt.RichText)
@@ -83,7 +86,7 @@ class ClockWindow(QtGui.QMainWindow):
 
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.updateFace)
-        self.timer.start(15000)
+        self.timer.start(10000)
 
         self.setContentsMargins(80, 80, 80, 80)
         self.setFixedSize(0, 0)

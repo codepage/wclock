@@ -27,19 +27,6 @@ def getFace():
     # -------------------------------------------------------------------- #
     # vars
     # -------------------------------------------------------------------- #
-    face = ([
-        "(I T ' S) X (A B O U T) E",
-        "(A) C (Q U A R T E R) D C",
-        "(T W E N T Y) (F I V E) X",
-        "(H A L F) B (T E N) F (T O)",
-        "(P A S T) E R U (N I N E)",
-        "(O N E) (S I X) (T H R E E)",
-        "(F O U R) (F I V E) (T W O)",
-        "(E I G H T) (E L E V E N)",
-        "(S E V E N) (T W E L V E)",
-        "(T E N) S E (O C L O C K)"
-    ])
-
     startColor = ''
     endColor = ''
 
@@ -51,34 +38,6 @@ def getFace():
     t = datetime.datetime.now()
     HOUR = t.hour % 12 or 12
     MINUTE = t.minute
-
-    cTimes = (
-        [
-            [[-1, -1], [-1, -1]],
-            [[15, 20], [15, 20]],
-            [[20, 30], [25, 30, False], [5, 10]],
-            [[30, 35], [10, 15], [35, 61]],
-            [[5, 35], [9]],
-            [[1], [6], [3]],
-            [[4], [5], [2]],
-            [[8], [11]],
-            [[7], [12]],
-            [[10], [0, 5]]
-        ]
-            if MINUTE < 35 else
-        [
-            [[-1, -1], [-1, -1]],
-            [[45, 50], [45, 50]],
-            [[35, 45], [35, 40, False], [55, 61]],
-            [[30, 35], [50, 55], [35, 61]],
-            [[5, 35], [8]],
-            [[12], [5], [2]],
-            [[3], [4], [1]],
-            [[7], [10]],
-            [[6], [11]],
-            [[9], [0, 5]]
-        ]
-    )
 
     if (__name__ == '__main__'):
         if len(sys.argv) > 1 and sys.argv[1] == '-t':
@@ -124,21 +83,33 @@ def getFace():
         sr = rex.search(row)
         return sr.group(1) if sr else ''
 
-    def getClockFace():
-        return startColor + '\n'.join(face) + endColor
+    def getClockFace(rows):
+        return startColor + '\n'.join(rows) + endColor
 
-    # -------------------------------------------------------------------- #
-    # actions
-    # -------------------------------------------------------------------- #
-    for i, row in enumerate(face):
-        for val in cTimes[i]:
+    def R(row, t1, t2):
+        t = t1 if MINUTE < 35 else t2
+        for val in t:
             isHour = len(val) == 1
             txt = getText(row)
             if txt != '':
                 row = hourFMT(row, txt, *val) if isHour else minFMT(row, txt, *val)
-        face[i] = row
+        return row
 
-    return getClockFace()
+    # -------------------------------------------------------------------- #
+    # actions
+    # -------------------------------------------------------------------- #
+    return getClockFace([
+            R("(I T ' S) X (A B O U T) E",    [[-1, -1], [-1, -1]],                   [[-1, -1], [-1, -1]]                  ),
+            R("(A) C (Q U A R T E R) D C",    [[15, 20], [15, 20]],                   [[45, 50], [45, 50]]                  ),
+            R("(T W E N T Y) (F I V E) X",    [[20, 30], [25, 30, False], [5, 10]],   [[35, 45], [35, 40, False], [55, 61]] ),
+            R("(H A L F) B (T E N) F (T O)",  [[30, 35], [10, 15], [35, 61]],         [[30, 35], [50, 55], [35, 61]]        ),
+            R("(P A S T) E R U (N I N E)",    [[5, 35], [9]],                         [[5, 35], [8]]                        ),
+            R("(O N E) (S I X) (T H R E E)",  [[1], [6], [3]],                        [[12], [5], [2]]                      ),
+            R("(F O U R) (F I V E) (T W O)",  [[4], [5], [2]],                        [[3], [4], [1]]                       ),
+            R("(E I G H T) (E L E V E N)",    [[8], [11]],                            [[7], [10]]                           ),
+            R("(S E V E N) (T W E L V E)",    [[7], [12]],                            [[6], [11]]                           ),
+            R("(T E N) S E (O C L O C K)",    [[10], [0, 5]],                         [[9], [0, 5]]                         )
+    ])
 
 def Face():
     return getFace()

@@ -1,11 +1,7 @@
 # Word Clock
 
-## JavaScript versions
+## JavaScript version
 
-##### 1\. wclock.coffee
-
-\- compiled as wclock.js, intended for most browsers
-
-##### 2\. wclock.es6.js
+##### 1\. wclock.es6.js
 
 \- ECMAScript6 version, intended for newer browsers
